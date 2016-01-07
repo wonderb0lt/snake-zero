@@ -2,33 +2,76 @@ package de.past.zuehlke.snake.model;
 
 import javafx.geometry.Point2D;
 
+import java.util.Collections;
 import java.util.Deque;
-import java.util.List;
+import java.util.LinkedList;
 
 public class Snake {
     private int length;
+    private int piecesToGrow;
+    private Direction currentDirection;
     private Deque<Point2D> points;
 
-    public Deque<Point2D> advance(Direction direction) {
-        Point2D newPoint = new Point2D(points.getFirst().getX(), points.getFirst().getY());
+    public Snake(int length, Direction currentDirection, Deque<Point2D> points) {
+        this.length = length;
+        this.currentDirection = currentDirection;
+        this.points = points;
+    }
 
-        switch (direction) {
+    public Deque<Point2D> advance() {
+        Point2D head = points.getFirst();
+        Point2D newPoint;
+
+        switch (currentDirection) {
             case NORTH:
-                newPoint.add(0, -1);
+                newPoint = head.add(0, -1);
                 break;
             case EAST:
-                newPoint.add(1, 0);
+                newPoint = head.add(1, 0);
                 break;
             case SOUTH:
-                newPoint.add(0, 1);
+                newPoint = head.add(0, 1);
                 break;
             case WEST:
-                newPoint.add(-1, 0);
+                newPoint = head.add(-1, 0);
                 break;
+            default:
+                throw new IllegalArgumentException("Unknown cardinal direction: " + currentDirection);
         }
 
         points.addFirst(newPoint);
-        points.removeLast();
+
+        if (piecesToGrow == 0) {
+            points.removeLast();
+        } else {
+            piecesToGrow--;
+        }
+
         return points;
+    }
+
+    public int consume(Food food) {
+        piecesToGrow += food.getValue();
+        return length + piecesToGrow;
+    }
+
+    public static Snake startingOffAt(Point2D startingPoint) {
+        return new Snake(1, Direction.EAST, new LinkedList<>(Collections.singletonList(startingPoint)));
+    }
+
+    public Deque<Point2D> getPoints() {
+        return points;
+    }
+
+    public Direction getCurrentDirection() {
+        return currentDirection;
+    }
+
+    public void setCurrentDirection(Direction newDirection) {
+        if (currentDirection.isOpposite(newDirection)) {
+            throw new IllegalArgumentException("Cannot set new direction (" + newDirection + ") that is opposite to the previous direction (" + currentDirection + ")");
+        }
+
+        this.currentDirection = newDirection;
     }
 }

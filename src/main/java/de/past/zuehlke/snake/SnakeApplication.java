@@ -1,19 +1,12 @@
 package de.past.zuehlke.snake;
 
 import de.past.zuehlke.snake.model.Direction;
-import de.past.zuehlke.snake.model.SimpleBoard;
 import de.past.zuehlke.snake.render.JavaFxRenderedBoard;
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.time.Duration;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -41,7 +34,7 @@ public class SnakeApplication extends Application {
             public void run() {
                 board.onTick();
             }
-        }, 500, 500);
+        }, 250, 250);
 
         scene.setOnKeyPressed(e -> {
             Optional<Direction> newDirection = Direction.mapKeyCode(e.getCode());

@@ -63,6 +63,10 @@ public class Snake {
         return points;
     }
 
+    public Point2D getHead() {
+        return points.getFirst();
+    }
+
     public Direction getCurrentDirection() {
         return currentDirection;
     }

@@ -1,7 +1,7 @@
 package de.past.zuehlke.snake.model.ending;
 
 import com.google.common.collect.Sets;
-import de.past.zuehlke.snake.model.SimpleBoard;
+import de.past.zuehlke.snake.model.SnakeGame;
 import javafx.geometry.Point2D;
 
 import java.util.Deque;
@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public class SelfCollisionEndCondition implements EndCondition {
     @Override
-    public Optional<GameEndReason> check(SimpleBoard board) {
+    public Optional<GameEndReason> check(SnakeGame board) {
         Deque<Point2D> snakePoints = board.getPrimarySnake().getPoints();
 
         Set<Point2D> foundPoints = Sets.newHashSetWithExpectedSize(snakePoints.size());

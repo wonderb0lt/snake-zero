@@ -9,6 +9,7 @@ import javafx.geometry.Point2D;
  */
 public class Food {
     private Point2D position;
+    private boolean consumed;
     private int value;
 
     public Food(Point2D position, int size) {
@@ -22,5 +23,13 @@ public class Food {
 
     public int getValue() {
         return value;
+    }
+
+    public void wasConsumed() {
+        this.consumed = true;
+    }
+
+    public boolean isConsumed() {
+        return consumed;
     }
 }

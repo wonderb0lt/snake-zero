@@ -7,14 +7,12 @@ import de.past.zuehlke.snake.model.ending.SelfCollisionEndCondition;
 import de.past.zuehlke.snake.model.ending.WallCollisionEndCondition;
 import javafx.geometry.Point2D;
 
-import java.util.Deque;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A simple board which manages the basic rules of the game, but is not responsible for rendering the data.
  */
-public class SimpleBoard {
+public class SnakeGame {
     /**
      * The primary snake on the board
      */
@@ -24,18 +22,46 @@ public class SimpleBoard {
             new WallCollisionEndCondition()
     );
 
+    private Set<Food> spawnedFood;
     private int width;
     private int height;
 
-    public SimpleBoard() {
+    public SnakeGame() {
         primarySnake = Snake.startingOffAt(Point2D.ZERO);
+        spawnedFood = new HashSet<>();
         width = 10;
         height = 10;
     }
 
     public void onTick() {
         primarySnake.advance();
+        checkFoodConsumption();
         checkEndReason();
+    }
+
+    protected void checkFoodConsumption() {
+        for (Food food : spawnedFood) {
+            if (food.getPosition().equals(primarySnake.getHead())) {
+                primarySnake.consume(food);
+                food.wasConsumed();
+            }
+
+        }
+
+        spawnedFood.removeIf(Food::isConsumed);
+        spawnFood();
+    }
+
+    protected void spawnFood() {
+        if (spawnedFood.size() == 0) {
+            Random random = new Random();
+            Point2D point = new Point2D(random.nextInt(width), random.nextInt(height));
+            while (primarySnake.getPoints().contains(point)) {
+                point = new Point2D(random.nextInt(width), random.nextInt(height));
+            }
+
+            spawnedFood.add(new Food(point, 1));
+        }
     }
 
     public void onDirectionChange(Direction newDirection) {
@@ -71,4 +97,7 @@ public class SimpleBoard {
         return height;
     }
 
+    public Set<Food> getSpawnedFood() {
+        return spawnedFood;
+    }
 }

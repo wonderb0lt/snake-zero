@@ -10,7 +10,8 @@ import java.util.*;
  * A simple board which manages the basic rules of the game, but is not responsible for rendering the data.
  */
 public class SnakeGame {
-    public static final int WINNING_POINTS = 25;
+    public static final int WINNING_POINTS = 50;
+    public static final int TICK_SPEED_IN_MS = 200;
     /**
      * The primary snake on the board
      */

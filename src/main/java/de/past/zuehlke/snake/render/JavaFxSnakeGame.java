@@ -23,7 +23,7 @@ import java.util.TimerTask;
 /**
  * A board which is rendered onto a JavaFX window
  */
-public class JavaFxGSnakeGame extends SnakeGame {
+public class JavaFxSnakeGame extends SnakeGame {
     private boolean tearingDown;
     private boolean paused;
     private static final int SCALE_FACTOR = 40;
@@ -49,7 +49,7 @@ public class JavaFxGSnakeGame extends SnakeGame {
                     onTick();
                 }
             }
-        }, 250, 250);
+        }, TICK_SPEED_IN_MS, TICK_SPEED_IN_MS);
 
         scene.setOnKeyPressed(e -> {
             if (ImmutableSet.of(KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN).contains(e.getCode())) {

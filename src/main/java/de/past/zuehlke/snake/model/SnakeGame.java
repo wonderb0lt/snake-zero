@@ -10,53 +10,26 @@ import java.util.*;
  * A simple board which manages the basic rules of the game, but is not responsible for rendering the data.
  */
 public class SnakeGame {
-    // TODO: These should be configurable instead of being public constants!
-    /**
-     * Number of points needed to win the game.
-     */
-    public static final int WINNING_POINTS = 50;
-    /**
-     * Tick speed in milliseconds (difficulty)
-     */
-    public static final int TICK_SPEED_IN_MS = 150;
-    /**
-     * The field size
-     */
-    public static final int DEFAULT_FIELD_SIZE = 15;
-
-    public static final int NUMBER_OF_PARALLEL_FOOD = 1;
-    /**
-     * The ending conditions.
-     */
-    private Set<EndCondition> endConditions = Sets.newHashSet(
-            new SelfCollisionEndCondition(),
-            new WallCollisionEndCondition(),
-            new WinningEndCondition()
-    );
-
+    private SnakeConfiguration config;
     /**
      * The primary snake on the board
      */
     private Snake primarySnake;
 
     /**
-     * The food available for the snake on the field (limited by {@link #NUMBER_OF_PARALLEL_FOOD})
+     * The food available for the snake on the field (limited by {@link SnakeConfiguration#parallelFood})
      */
     private Set<Food> spawnedFood;
-    /**
-     * Width of the game field (logically, not rendering size)
-     */
-    private int width;
-    /**
-     * Height of the game field (logically, not rendering size)
-     */
-    private int height;
 
     public SnakeGame() {
+        this(SnakeConfiguration.defaultConfiguration());
+    }
+
+    public SnakeGame(SnakeConfiguration config) {
+        this.config = config;
         primarySnake = Snake.startingOffAt(Point2D.ZERO);
         spawnedFood = new HashSet<>();
-        width = DEFAULT_FIELD_SIZE;
-        height = DEFAULT_FIELD_SIZE;
+
     }
 
     public void onTick() {
@@ -79,13 +52,13 @@ public class SnakeGame {
     }
 
     protected void spawnFood() {
-        if (spawnedFood.size() < NUMBER_OF_PARALLEL_FOOD) {
+        if (spawnedFood.size() < config.getParallelFood()) {
             Random random = new Random();
-            Point2D point = new Point2D(random.nextInt(width), random.nextInt(height));
+            Point2D point = new Point2D(random.nextInt(config.getFieldSize()), random.nextInt(config.getFieldSize()));
 
             // Loop till you found a place to spawn the food which is not within the snake.
             while (primarySnake.getPoints().contains(point)) {
-                point = new Point2D(random.nextInt(width), random.nextInt(height));
+                point = new Point2D(random.nextInt(config.getFieldSize()), random.nextInt(config.getFieldSize()));
             }
 
             spawnedFood.add(new Food(point, 1));
@@ -106,7 +79,7 @@ public class SnakeGame {
      * @return A reason for the ending of the game, or an empty optional if none of the end-conditions are met.
      */
     private Optional<GameEndReason> checkEndReason() {
-        for (EndCondition endCondition : endConditions) {
+        for (EndCondition endCondition : config.getEndConditions()) {
             Optional<GameEndReason> endReason = endCondition.check(this);
 
             if (endReason.isPresent()) {
@@ -125,15 +98,11 @@ public class SnakeGame {
         return primarySnake;
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
     public Set<Food> getSpawnedFood() {
         return spawnedFood;
+    }
+
+    public SnakeConfiguration getConfig() {
+        return this.config;
     }
 }

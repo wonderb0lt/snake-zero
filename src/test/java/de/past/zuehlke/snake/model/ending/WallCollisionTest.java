@@ -29,7 +29,8 @@ public class WallCollisionTest extends AbstractGameTest {
     @Test
     public void testCollidingWithPositiveSide() {
 
-        SnakeGame game = prepareGameWithSnakePoints(new Point2D(SnakeGame.DEFAULT_FIELD_SIZE + 1, 0), new Point2D(SnakeGame.DEFAULT_FIELD_SIZE, 0));
+        // TODO: Get value from default game config
+        SnakeGame game = prepareGameWithSnakePoints(new Point2D(20 + 1, 0), new Point2D(20, 0));
         Optional<GameEndReason> check = new WallCollisionEndCondition().check(game);
 
         Assert.assertTrue(check.isPresent());

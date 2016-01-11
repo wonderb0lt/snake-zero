@@ -1,12 +1,7 @@
 package de.past.zuehlke.snake.render;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.hash.HashFunction;
-import com.google.common.hash.Hashing;
-import de.past.zuehlke.snake.model.Direction;
-import de.past.zuehlke.snake.model.Food;
-import de.past.zuehlke.snake.model.SnakeGame;
-import de.past.zuehlke.snake.model.Snake;
+import de.past.zuehlke.snake.model.*;
 import de.past.zuehlke.snake.model.ending.GameEndReason;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -27,11 +22,9 @@ import java.util.TimerTask;
  * A board which is rendered onto a JavaFX window
  */
 public class JavaFxSnakeGame extends SnakeGame {
-    private final int RESOLUTION = 1000;
-
     private boolean tearingDown;
     private boolean paused;
-    private int scaleFactor = 40;
+    private int scaleFactor;
     private Timer tickTimer;
     private Group rootGroup;
     private Canvas canvas;
@@ -42,9 +35,9 @@ public class JavaFxSnakeGame extends SnakeGame {
     public void initialize(Stage stage) {
         this.stage = stage;
         this.rootGroup = new Group();
-        this.scene = new Scene(rootGroup, RESOLUTION, RESOLUTION);
-        this.scaleFactor = RESOLUTION / getWidth();
-        this.canvas = new Canvas(getWidth() * this.scaleFactor, getHeight() * this.scaleFactor);
+        this.scene = new Scene(rootGroup, getConfig().getResolution(), getConfig().getResolution());
+        this.scaleFactor = getConfig().getResolution() / getConfig().getFieldSize();
+        this.canvas = new Canvas(getConfig().getFieldSize() * this.scaleFactor, getConfig().getFieldSize() * this.scaleFactor);
         this.tickTimer = new Timer();
         this.paused = false;
         this.tearingDown = false;
@@ -56,7 +49,7 @@ public class JavaFxSnakeGame extends SnakeGame {
                     onTick();
                 }
             }
-        }, TICK_SPEED_IN_MS, TICK_SPEED_IN_MS);
+        }, getConfig().getTickSpeed(), getConfig().getTickSpeed());
 
         scene.setOnKeyPressed(e -> {
             if (ImmutableSet.of(KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN).contains(e.getCode())) {
@@ -66,7 +59,7 @@ public class JavaFxSnakeGame extends SnakeGame {
                 togglePause();
             } else if (KeyCode.ESCAPE.equals(e.getCode())) {
                 tickTimer.cancel();
-                System.exit(0);
+                stage.hide();
             }
         });
 
@@ -79,6 +72,10 @@ public class JavaFxSnakeGame extends SnakeGame {
         rootGroup.getChildren().add(boardGroup);
         stage.setScene(scene);
 
+    }
+
+    public JavaFxSnakeGame(SnakeConfiguration config) {
+        super(config);
     }
 
     private void togglePause() {

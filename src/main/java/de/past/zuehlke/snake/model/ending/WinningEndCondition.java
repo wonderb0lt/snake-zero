@@ -10,7 +10,7 @@ import java.util.Optional;
 public class WinningEndCondition implements EndCondition {
     @Override
     public Optional<GameEndReason> check(SnakeGame board) {
-        if (board.getPrimarySnake().getPoints().size() == SnakeGame.WINNING_POINTS) {
+        if (board.getPrimarySnake().getPoints().size() >= SnakeGame.WINNING_POINTS) {
             return Optional.of(GameEndReason.WON);
         } else {
             return Optional.empty();

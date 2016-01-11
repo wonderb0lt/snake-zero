@@ -27,9 +27,11 @@ import java.util.TimerTask;
  * A board which is rendered onto a JavaFX window
  */
 public class JavaFxSnakeGame extends SnakeGame {
+    private final int RESOLUTION = 1000;
+
     private boolean tearingDown;
     private boolean paused;
-    private static final int SCALE_FACTOR = 40;
+    private int scaleFactor = 40;
     private Timer tickTimer;
     private Group rootGroup;
     private Canvas canvas;
@@ -40,8 +42,9 @@ public class JavaFxSnakeGame extends SnakeGame {
     public void initialize(Stage stage) {
         this.stage = stage;
         this.rootGroup = new Group();
-        this.scene = new Scene(rootGroup, 400, 400);
-        this.canvas = new Canvas(getWidth() * SCALE_FACTOR, getHeight() * SCALE_FACTOR);
+        this.scene = new Scene(rootGroup, RESOLUTION, RESOLUTION);
+        this.scaleFactor = RESOLUTION / getWidth();
+        this.canvas = new Canvas(getWidth() * this.scaleFactor, getHeight() * this.scaleFactor);
         this.tickTimer = new Timer();
         this.paused = false;
         this.tearingDown = false;
@@ -85,7 +88,7 @@ public class JavaFxSnakeGame extends SnakeGame {
     private void drawSnake(GraphicsContext context, Snake snake) {
         context.setFill(Color.WHITE);
         for (Point2D point : snake.getPoints()) {
-            context.fillRect(point.getX() * SCALE_FACTOR, point.getY() * SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR);
+            context.fillRect(point.getX() * scaleFactor, point.getY() * scaleFactor, scaleFactor, scaleFactor);
         }
     }
 
@@ -98,7 +101,7 @@ public class JavaFxSnakeGame extends SnakeGame {
         for (Food food : getSpawnedFood()) {
             Point2D pos = food.getPosition();
             context.setFill(food.getColor());
-            context.fillOval(pos.getX() * SCALE_FACTOR, pos.getY() * SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR);
+            context.fillOval(pos.getX() * scaleFactor, pos.getY() * scaleFactor, scaleFactor, scaleFactor);
         }
     }
 

@@ -18,11 +18,11 @@ public class SnakeGame {
     /**
      * Tick speed in milliseconds (difficulty)
      */
-    public static final int TICK_SPEED_IN_MS = 200;
+    public static final int TICK_SPEED_IN_MS = 150;
     /**
      * The field size
      */
-    public static final int DEFAULT_FIELD_SIZE = 10;
+    public static final int DEFAULT_FIELD_SIZE = 15;
 
     public static final int NUMBER_OF_PARALLEL_FOOD = 1;
     /**

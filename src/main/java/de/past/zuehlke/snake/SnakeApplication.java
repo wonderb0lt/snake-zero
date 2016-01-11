@@ -17,6 +17,5 @@ public class SnakeApplication extends Application {
         JavaFxSnakeGame board = new JavaFxSnakeGame();
         board.initialize(primaryStage);
         primaryStage.show();
-
     }
 }

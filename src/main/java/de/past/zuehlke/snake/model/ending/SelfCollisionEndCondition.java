@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Created by past on 07.01.2016.
+ * A end condition for when the snake collided with itself.
  */
 public class SelfCollisionEndCondition implements EndCondition {
     @Override

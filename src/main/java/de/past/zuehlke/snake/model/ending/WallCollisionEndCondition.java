@@ -5,9 +5,6 @@ import javafx.geometry.Point2D;
 
 import java.util.Optional;
 
-/**
- * Created by past on 07.01.2016.
- */
 public class WallCollisionEndCondition implements EndCondition {
     @Override
     public Optional<GameEndReason> check(SnakeGame board) {

@@ -11,21 +11,45 @@ import java.util.*;
  */
 public class SnakeGame {
     // TODO: These should be configurable instead of being public constants!
-    public static final int WINNING_POINTS = 50;
-    public static final int TICK_SPEED_IN_MS = 200;
-    public static final int DEFAULT_FIELD_SIZE = 10;
     /**
-     * The primary snake on the board
+     * Number of points needed to win the game.
      */
-    private Snake primarySnake;
+    public static final int WINNING_POINTS = 50;
+    /**
+     * Tick speed in milliseconds (difficulty)
+     */
+    public static final int TICK_SPEED_IN_MS = 200;
+    /**
+     * The field size
+     */
+    public static final int DEFAULT_FIELD_SIZE = 10;
+
+    public static final int NUMBER_OF_PARALLEL_FOOD = 1;
+    /**
+     * The ending conditions.
+     */
     private Set<EndCondition> endConditions = Sets.newHashSet(
             new SelfCollisionEndCondition(),
             new WallCollisionEndCondition(),
             new WinningEndCondition()
     );
 
+    /**
+     * The primary snake on the board
+     */
+    private Snake primarySnake;
+
+    /**
+     * The food available for the snake on the field (limited by {@link #NUMBER_OF_PARALLEL_FOOD})
+     */
     private Set<Food> spawnedFood;
+    /**
+     * Width of the game field (logically, not rendering size)
+     */
     private int width;
+    /**
+     * Height of the game field (logically, not rendering size)
+     */
     private int height;
 
     public SnakeGame() {
@@ -55,9 +79,11 @@ public class SnakeGame {
     }
 
     protected void spawnFood() {
-        if (spawnedFood.size() == 0) {
+        if (spawnedFood.size() < NUMBER_OF_PARALLEL_FOOD) {
             Random random = new Random();
             Point2D point = new Point2D(random.nextInt(width), random.nextInt(height));
+
+            // Loop till you found a place to spawn the food which is not within the snake.
             while (primarySnake.getPoints().contains(point)) {
                 point = new Point2D(random.nextInt(width), random.nextInt(height));
             }

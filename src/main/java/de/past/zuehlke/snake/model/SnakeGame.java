@@ -10,8 +10,10 @@ import java.util.*;
  * A simple board which manages the basic rules of the game, but is not responsible for rendering the data.
  */
 public class SnakeGame {
+    // TODO: These should be configurable instead of being public constants!
     public static final int WINNING_POINTS = 50;
     public static final int TICK_SPEED_IN_MS = 200;
+    public static final int DEFAULT_FIELD_SIZE = 10;
     /**
      * The primary snake on the board
      */
@@ -29,8 +31,8 @@ public class SnakeGame {
     public SnakeGame() {
         primarySnake = Snake.startingOffAt(Point2D.ZERO);
         spawnedFood = new HashSet<>();
-        width = 10;
-        height = 10;
+        width = DEFAULT_FIELD_SIZE;
+        height = DEFAULT_FIELD_SIZE;
     }
 
     public void onTick() {

@@ -7,13 +7,11 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 public class Snake {
-    private int length;
     private int piecesToGrow;
     private Direction currentDirection;
     private Deque<Point2D> points;
 
     public Snake(int length, Direction currentDirection, Deque<Point2D> points) {
-        this.length = length;
         this.currentDirection = currentDirection;
         this.points = points;
     }
@@ -52,7 +50,7 @@ public class Snake {
 
     public int consume(Food food) {
         piecesToGrow += food.getValue();
-        return length + piecesToGrow;
+        return points.size() + piecesToGrow;
     }
 
     public static Snake startingOffAt(Point2D startingPoint) {

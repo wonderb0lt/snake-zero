@@ -1,6 +1,8 @@
 package de.past.zuehlke.snake.render;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.hash.HashFunction;
+import com.google.common.hash.Hashing;
 import de.past.zuehlke.snake.model.Direction;
 import de.past.zuehlke.snake.model.Food;
 import de.past.zuehlke.snake.model.SnakeGame;
@@ -17,6 +19,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.Optional;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -32,6 +35,7 @@ public class JavaFxSnakeGame extends SnakeGame {
     private Canvas canvas;
     private Scene scene;
     private Stage stage;
+    public static final Random RANDOM = new Random();
 
     public void initialize(Stage stage) {
         this.stage = stage;
@@ -93,7 +97,7 @@ public class JavaFxSnakeGame extends SnakeGame {
     private void drawFood(GraphicsContext context) {
         for (Food food : getSpawnedFood()) {
             Point2D pos = food.getPosition();
-            context.setFill(Color.BEIGE);
+            context.setFill(food.getColor());
             context.fillOval(pos.getX() * SCALE_FACTOR, pos.getY() * SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR);
         }
     }

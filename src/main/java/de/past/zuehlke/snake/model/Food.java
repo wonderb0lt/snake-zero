@@ -6,9 +6,7 @@ import javafx.scene.paint.Color;
 import java.util.Random;
 
 /**
- * Entity representing a bit of food on the board.
- *
- * @TODO Neither spawned nor rendered yet
+ * Entity representing a bit of food on the board, with a specific color
  */
 public class Food {
     private Point2D position;
@@ -21,7 +19,7 @@ public class Food {
         this.value = size;
 
         Random random = new Random();
-        this.color = Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255));
+        this.color = Color.hsb(random.nextFloat() * 360, random.nextFloat(), 0.6 + (random.nextFloat() * 0.4));
     }
 
     public Point2D getPosition() {

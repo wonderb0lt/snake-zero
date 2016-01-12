@@ -17,6 +17,20 @@ public class OnTickTest extends AbstractGameTest {
     }
 
     @Test
+    public void testSnakeAdvanceWithLoopingEnabled() {
+        SnakeConfiguration config = SnakeConfiguration.defaultConfiguration();
+        config.setLoopAround(true);
+
+        SnakeGame game = new SnakeGame(config);
+
+        for (int i = 0; i < 11; i++) {
+            game.onTick();
+        }
+
+        Assert.assertEquals(Point2D.ZERO, game.getPrimarySnake().getHead()); // Snake should have looped around
+    }
+
+    @Test
     public void foodIsSpawnedOnTick() {
         SnakeGame game = prepareGameWithSnakePoints(Point2D.ZERO);
 

@@ -1,6 +1,5 @@
 package de.past.zuehlke.snake.model;
 
-import com.google.common.collect.Sets;
 import de.past.zuehlke.snake.model.ending.*;
 import javafx.geometry.Point2D;
 
@@ -35,7 +34,25 @@ public class SnakeGame {
     public void onTick() {
         primarySnake.advance();
         checkFoodConsumption();
+        checkLoopAround();
         checkEndReason();
+    }
+
+    private void checkLoopAround() {
+        if (config.isLoopAround()) {
+            Deque<Point2D> points = primarySnake.getPoints();
+            Point2D head = primarySnake.getHead();
+
+            if (head.getX() < 0) {
+                points.addFirst(points.pop().add(config.getFieldSize(), 0));
+            } else if (head.getX() >= config.getFieldSize()) {
+                points.addFirst(points.pop().add(-config.getFieldSize(), 0));
+            } else if (head.getY() < 0) {
+                points.addFirst(points.pop().add(0, config.getFieldSize()));
+            } else if (head.getY() >= config.getFieldSize()) {
+                points.addFirst(points.pop().add(0, -config.getFieldSize()));
+            }
+        }
     }
 
     protected void checkFoodConsumption() {

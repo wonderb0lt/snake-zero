@@ -35,6 +35,7 @@ public class SnakeApplication extends Application {
         });
 
 
+        gridPane.setHgap(5);
         gridPane.addRow(0, new Label("Winning points: "), winningPoints);
         gridPane.addRow(1, new Label("Tick speed (ms): "), tickSpeed);
         gridPane.addRow(2, new Label("Resolution (px): "), resolution);
@@ -51,6 +52,7 @@ public class SnakeApplication extends Application {
         config.setTickSpeed(Integer.parseInt(tickSpeed.getText()));
         config.setResolution(Integer.parseInt(resolution.getText()));
         config.setFieldSize(Integer.parseInt(fieldSize.getText()));
+        config.setLoopAround(false);
 
         return config;
     }

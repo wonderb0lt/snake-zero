@@ -13,10 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.util.Optional;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  * A board which is rendered onto a JavaFX window
@@ -83,8 +80,23 @@ public class JavaFxSnakeGame extends SnakeGame {
     }
 
     private void drawSnake(GraphicsContext context, Snake snake) {
-        context.setFill(Color.WHITE);
-        for (Point2D point : snake.getPoints()) {
+        float startColor = 255;
+        float endColor = 192;
+        Deque<Point2D> points = snake.getPoints();
+        int snakeLength = points.size();
+        int i = 0;
+
+        Iterator<Point2D> descendingIterator = points.descendingIterator();
+        while (descendingIterator.hasNext()) {
+            Point2D point = descendingIterator.next();
+
+            if (points.size() > 1) {
+                int interpolatedColor = (int) (endColor + (startColor - endColor) * (i++ / (float) snakeLength));
+                context.setFill(Color.rgb(interpolatedColor, interpolatedColor, interpolatedColor));
+            } else {
+                context.setFill(Color.WHITE);
+            }
+
             context.fillRect(point.getX() * scaleFactor, point.getY() * scaleFactor, scaleFactor, scaleFactor);
         }
     }

@@ -19,11 +19,13 @@ public class OnTickTest extends AbstractGameTest {
     @Test
     public void testSnakeAdvanceWithLoopingEnabled() {
         SnakeConfiguration config = SnakeConfiguration.defaultConfiguration();
-        config.setLoopAround(true);
 
+        // Set non-default values needed for this test to work
+        config.setLoopAround(true);
+        config.setFieldSize(10);
         SnakeGame game = new SnakeGame(config);
 
-        for (int i = 0; i < 11; i++) {
+        for (int i = 0; i < 10; i++) {
             game.onTick();
         }
 
